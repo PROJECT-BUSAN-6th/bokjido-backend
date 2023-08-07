@@ -20,12 +20,12 @@ public class UserService {
 
     // <<-- 회원가입 -->>
     public void join(User user) {
-//        validateDuplicateUser(user); // 중복 회원 검증
+        validateDuplicateUser(user); // 중복 회원 검증
         userRepository.save(user);
     }
 
     private void validateDuplicateUser(User user){
-        userRepository.findById(user.getUserid())
+        userRepository.findByUserid(user.getUserid())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
@@ -36,7 +36,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findOne(String userid) {
-        return userRepository.findByUserid(userid);
+    public Optional<User> findOne(String userId) {
+        return userRepository.findByUserid(userId);
     }
 }

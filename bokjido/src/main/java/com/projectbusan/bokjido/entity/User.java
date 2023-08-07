@@ -18,7 +18,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
+
     private String userid;
 
     private String username;
