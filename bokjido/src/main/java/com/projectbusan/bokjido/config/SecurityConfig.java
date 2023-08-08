@@ -42,8 +42,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable().cors().disable()
+                .csrf().disable()
                 .headers(headers -> headers.frameOptions(options -> options.sameOrigin())) // H2 콘솔 사용을 위한 설정
+                .exceptionHandling(request -> request
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 401 에러 핸들링
+                        .accessDeniedHandler(jwtAccessDeniedHandler)) // 403 에러 핸들링
                 .authorizeHttpRequests(request ->
                                 request
                                         .requestMatchers(PathRequest.toH2Console()).permitAll() // H2 콘솔 접속은 모두에게 허용
