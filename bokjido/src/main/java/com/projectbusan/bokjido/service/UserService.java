@@ -30,6 +30,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // 중복 회원 조회
     @Transactional
     private void validateDuplicateUser(String userid){
         Optional<User> userModel = userRepository.findByUserid(userid);
@@ -37,8 +38,6 @@ public class UserService {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
-
-
 
     // <<-- 전체 회원 조회 -->>
     public List<User> findUsers() {

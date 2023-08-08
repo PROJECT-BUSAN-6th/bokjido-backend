@@ -41,6 +41,14 @@ dependencies {
 	//Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
 
+	//jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.1'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.1'
+
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

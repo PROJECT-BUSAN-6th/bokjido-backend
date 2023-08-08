@@ -1,12 +1,17 @@
 package com.projectbusan.bokjido.config;
 
+import com.projectbusan.bokjido.auth.JwtAccessDeniedHandler;
+import com.projectbusan.bokjido.auth.JwtAuthenticationEntryPoint;
+import com.projectbusan.bokjido.auth.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -18,7 +23,19 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@ComponentScan(basePackages = {"com.projectbusan.bokjido.config", "com.projectbusan.bokjido.auth"})
 public class SecurityConfig {
+
+    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Bean
+    public BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
     private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**"
             , "/api-docs/**", "/api/auth/**"};
 
