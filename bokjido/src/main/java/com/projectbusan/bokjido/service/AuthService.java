@@ -36,7 +36,7 @@ public class AuthService {
     public AuthDTO.TokenDto login(AuthDTO.LoginDto loginDto) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = userRepository.findByUserid(loginDto.getUserid()).orElseThrow(()->{
-            throw new IllegalStateException("Email을 다시 확인하세요.");
+            throw new IllegalStateException("ID를 다시 확인하세요.");
         });
         if(!encoder.matches(loginDto.getPassword(),user.getPassword())){
         }

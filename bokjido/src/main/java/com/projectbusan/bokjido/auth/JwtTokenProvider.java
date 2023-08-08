@@ -33,9 +33,8 @@ public class JwtTokenProvider implements InitializingBean {
     private final RedisService redisService;
 
     private static final String AUTHORITIES_KEY = "role";
-    private static final String EMAIL_KEY = "email";
+    private static final String ID_KEY = "userid";
 
-    private static final String PURCHASE_KEY = "purchase";
     private static final String url = "https://localhost:8080";
 
     private final String secretKey;
@@ -67,11 +66,9 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     @Transactional
-    public AuthDTO.TokenDto createToken(String email, String authorities){
+    public AuthDTO.TokenDto createToken(String userid, String authorities){
         Long now = System.currentTimeMillis();
 
-//        List<String> userPurchase = userService.checkUserPurchase(email);
-//        String purchaseJson = convertListToJson(userPurchase);
 
         String accessToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
@@ -79,8 +76,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .setExpiration(new Date(now + accessTokenValidityInMilliseconds))
                 .setSubject("access-token")
                 .claim(url, true)
-                .claim(EMAIL_KEY, email)
-//                .claim(PURCHASE_KEY, purchaseJson)
+                .claim(ID_KEY, userid)
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(signingKey, SignatureAlgorithm.HS512)
                 .compact();
@@ -98,7 +94,7 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
 
-    // == 토큰으로부터 정보 추출 == //
+    // <<-- 토큰으로부터 정보 추출 -->>
     private String convertListToJson(List<String> list) {
         try {
             return new ObjectMapper().writeValueAsString(list);
@@ -121,7 +117,7 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public Authentication getAuthentication(String token) {
-        String email = getClaims(token).get(EMAIL_KEY).toString();
+        String email = getClaims(token).get(ID_KEY).toString();
         UserDetailsImpl userDetailsImpl = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetailsImpl, "", userDetailsImpl.getAuthorities());
     }
