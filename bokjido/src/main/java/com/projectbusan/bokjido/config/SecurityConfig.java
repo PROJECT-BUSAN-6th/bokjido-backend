@@ -20,14 +20,12 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**"
-            , "/api-docs/**"};
-
-
+            , "/api-docs/**", "/api/auth/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf().disable().cors().disable()
                 .headers(headers -> headers.frameOptions(options -> options.sameOrigin())) // H2 콘솔 사용을 위한 설정
                 .authorizeHttpRequests(request ->
                                 request

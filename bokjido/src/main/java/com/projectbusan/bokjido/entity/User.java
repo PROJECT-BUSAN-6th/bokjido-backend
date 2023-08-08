@@ -1,8 +1,10 @@
 package com.projectbusan.bokjido.entity;
 
+import com.projectbusan.bokjido.dto.AuthDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -25,7 +27,7 @@ public class User {
 
     private String password;
 
-    private Date birth;
+    private LocalDate birth;
 
     private String gender;
 
@@ -36,7 +38,7 @@ public class User {
     private LocalDateTime modify_date;
 
     @Builder
-    public User(Long id, String userid, String username, String password, Date birth, String gender, LocalDateTime create_date, LocalDateTime modify_date) {
+    public User(Long id, String userid, String username, String password, LocalDate birth, String gender, LocalDateTime create_date, LocalDateTime modify_date) {
         this.id = id;
         this.userid = userid;
         this.username = username;
@@ -45,5 +47,16 @@ public class User {
         this.gender = gender;
         this.create_date = create_date;
         this.modify_date = modify_date;
+    }
+
+    public static User register(AuthDTO.SignupDto signupDto) {
+        return User.builder()
+                .userid(signupDto.getUserid())
+                .password(signupDto.getPassword())
+                .username(signupDto.getUsername())
+                .birth(signupDto.getBirth())
+                .gender(signupDto.getGender())
+                .create_date(LocalDateTime.now())
+                .build();
     }
 }

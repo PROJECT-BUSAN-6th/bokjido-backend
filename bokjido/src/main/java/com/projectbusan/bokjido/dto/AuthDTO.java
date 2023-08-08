@@ -1,11 +1,9 @@
 package com.projectbusan.bokjido.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class AuthDTO {
@@ -36,19 +34,19 @@ public class AuthDTO {
         private String password;
 
         @Schema(description = "이름")
-        private String name;
+        private String username;
 
         @Schema(description = "생년월일", example = "2000-01-01")
-        private Date birth;
+        private LocalDate birth;
 
         @Schema(description = "성별", example = "남 or 여")
         private String gender;
 
         @Builder
-        public SignupDto(String userid, String password, String name, Date birth, String gender) {
+        public SignupDto(String userid, String password, String username, LocalDate birth, String gender) {
             this.userid = userid;
             this.password = password;
-            this.name = name;
+            this.username = username;
             this.birth = birth;
             this.gender = gender;
         }

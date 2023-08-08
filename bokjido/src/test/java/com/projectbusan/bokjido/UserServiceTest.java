@@ -1,6 +1,7 @@
 package com.projectbusan.bokjido;
 
 
+import com.projectbusan.bokjido.dto.AuthDTO;
 import com.projectbusan.bokjido.entity.User;
 import com.projectbusan.bokjido.repository.UserRepository;
 import com.projectbusan.bokjido.service.UserService;
@@ -31,16 +32,10 @@ public class UserServiceTest {
     @Test
     public void 회원가입(){
         //given
-        User user = new User();
-        user.setUserid("userid");
-        user.setPassword("password");
-        user.setUsername("user_name");
-        user.setBirth(new Date());
-        user.setGender("남1");
-        user.setCreate_date(LocalDateTime.now());
+        AuthDTO.SignupDto signupDto;
 
         //when
-        userService.join(user);
+        userService.register();
 
         //then
         User findUser = userService.findOne("userid").get();
