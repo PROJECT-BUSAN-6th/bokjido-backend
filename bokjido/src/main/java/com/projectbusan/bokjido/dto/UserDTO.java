@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,6 +14,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Schema(description = "User DTO")
 public class UserDTO {
+    @Schema(description = "id", example = "id")
+    private Long id;
+
     @Schema(description = "userid", example = "userid")
     private String userid;
 
@@ -30,5 +34,8 @@ public class UserDTO {
 
     @Schema(description = "권한")
     private Role role;
+
+    @Schema(description = "create_date")
+    private LocalDateTime create_date;
 
 }

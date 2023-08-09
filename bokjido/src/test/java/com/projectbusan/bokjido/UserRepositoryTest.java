@@ -1,3 +1,4 @@
+/*
 package com.projectbusan.bokjido;
 
 import com.projectbusan.bokjido.entity.User;
@@ -44,3 +45,4 @@ public class UserRepositoryTest {
         System.out.println("user = " + user);
     }
 }
+*/

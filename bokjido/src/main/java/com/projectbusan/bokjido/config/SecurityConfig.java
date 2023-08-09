@@ -37,7 +37,7 @@ public class SecurityConfig {
 
 
     private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**"
-            , "/api-docs/**", "/api/auth/**"};
+            , "/api-docs/**", "/api/auth/**", "/api/service/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
