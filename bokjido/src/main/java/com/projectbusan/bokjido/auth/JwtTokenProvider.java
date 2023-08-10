@@ -117,8 +117,8 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public Authentication getAuthentication(String token) {
-        String email = getClaims(token).get(ID_KEY).toString();
-        UserDetailsImpl userDetailsImpl = userDetailsService.loadUserByUsername(email);
+        String id = getClaims(token).get(ID_KEY).toString();
+        UserDetailsImpl userDetailsImpl = userDetailsService.loadUserByUsername(id);
         return new UsernamePasswordAuthenticationToken(userDetailsImpl, "", userDetailsImpl.getAuthorities());
     }
 
