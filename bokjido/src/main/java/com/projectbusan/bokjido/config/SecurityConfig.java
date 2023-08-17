@@ -39,7 +39,7 @@ public class SecurityConfig {
 
 
     private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**"
-            , "/api-docs/**", "/api/auth/**", };
+            , "/api-docs/**", "/api/auth/**", "/api/facility/**" };
 
     private final String[] allowedForUser = {"/api/service/loadall"};
 
