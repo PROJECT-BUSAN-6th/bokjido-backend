@@ -1,10 +1,7 @@
 package com.projectbusan.bokjido.entity;
 
 import com.projectbusan.bokjido.dto.PostDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long admin_id;
