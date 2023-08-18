@@ -30,5 +30,5 @@ public class FacilityService {
     public Optional<Facility> searchById(Long id) { return facilityRepository.findById(id); }
 
     // <<-- 전체 복지 건물 조회 -->>
-    public List<Facility> allload() { return facilityRepository.findAll(); }
+    public List<Facility> loadAll() { return facilityRepository.findAll(); }
 }
