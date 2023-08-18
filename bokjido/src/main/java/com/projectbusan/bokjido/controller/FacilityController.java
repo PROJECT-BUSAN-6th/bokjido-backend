@@ -2,7 +2,7 @@ package com.projectbusan.bokjido.controller;
 
 import com.projectbusan.bokjido.dto.FacilityDTO;
 import com.projectbusan.bokjido.entity.Facility;
-import com.projectbusan.bokjido.service.FacilityService;
+import com.projectbusan.bokjido.service.WelfareFacility;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,13 +20,13 @@ import java.util.Optional;
 @RequestMapping("/api/facility")
 @RequiredArgsConstructor
 public class FacilityController {
-    private final FacilityService facilityService;
+    private final WelfareFacility welfareFacility;
 
     // <<-- 복지 시설을 DB에 create 처리 -->>
     @Operation(summary = "복지 시설 DB에 생성")
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody @Valid FacilityDTO.FacilityDto facilityDto) {
-        facilityService.create(facilityDto);
+        welfareFacility.create(facilityDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -37,7 +37,7 @@ public class FacilityController {
         Optional<Facility> facilityList;
 
         try {
-            facilityList = facilityService.searchById(id);
+            facilityList = welfareFacility.searchById(id);
         } catch (IllegalStateException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         } return new ResponseEntity(facilityList, HttpStatus.OK);
@@ -46,11 +46,11 @@ public class FacilityController {
     // <<-- DB에 있는 전체 복지 시설 조회 -->>
     @Operation(summary = "DB의 전체 복지 시설 조회")
     @GetMapping("/loadall")
-    public @ResponseBody ResponseEntity allload() {
+    public @ResponseBody ResponseEntity loadAll() {
         List<Facility> facilityList;
 
         try {
-            facilityList = facilityService.allload();
+            facilityList = welfareFacility.loadAll();
         } catch (IllegalStateException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         } return new ResponseEntity(facilityList, HttpStatus.OK);

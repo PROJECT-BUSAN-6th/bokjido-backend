@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class FacilityService {
+public class WelfareFacility {
     @Autowired
     private FacilityRepository facilityRepository;
 
