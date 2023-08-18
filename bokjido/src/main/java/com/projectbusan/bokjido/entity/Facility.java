@@ -15,7 +15,11 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+<<<<<<< HEAD
 @Table(name = "facilities")
+=======
+@Table(name = "facilitys")
+>>>>>>> 2a15130b78dbbc86d92984cef8fa35a8b7a65a1f
 public class Facility {
     @Id
     @GeneratedValue

@@ -48,7 +48,6 @@ public class FacilityController {
     @GetMapping("/loadall")
     public @ResponseBody ResponseEntity loadAll() {
         List<Facility> facilityList;
-
         try {
             facilityList = welfareFacility.loadAll();
         } catch (IllegalStateException e) {
