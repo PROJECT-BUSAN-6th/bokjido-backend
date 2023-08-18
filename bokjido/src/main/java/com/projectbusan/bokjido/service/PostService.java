@@ -28,7 +28,7 @@ public class PostService {
 
     // <<-- 전체 게시글 조회 -->>
 
-    public List<Post> allload() {
+    public List<Post> loadAll() {
         return postRepository.findAll();
     }
 }

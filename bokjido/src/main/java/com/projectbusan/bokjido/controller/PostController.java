@@ -33,11 +33,11 @@ public class PostController {
     // <<-- 전체 게시글 조회 -->>
     @Operation(summary = "전체 게시글 조회")
     @GetMapping("/loadall")
-    public @ResponseBody ResponseEntity allload() {
+    public @ResponseBody ResponseEntity loadAll() {
         List<Post> postList;
 
         try{
-            postList = postService.allload();
+            postList = postService.loadAll();
         } catch(IllegalStateException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         } return new ResponseEntity(postList, HttpStatus.OK);
