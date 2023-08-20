@@ -1,12 +1,14 @@
 package com.projectbusan.bokjido.auth;
 
 import com.projectbusan.bokjido.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
     private final User user;
 
