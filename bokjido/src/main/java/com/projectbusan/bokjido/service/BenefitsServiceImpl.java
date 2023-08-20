@@ -95,7 +95,17 @@ public class BenefitsServiceImpl implements BenefitsService {
 
     @Override
     public Long createReview(User user, BenefitReviewRequestDTO benefitReviewRequestDTO) {
-        return null;
+        Benefit benefit = findBenefits(benefitReviewRequestDTO.getServiceId());
+
+        BenefitReview benefitReview = BenefitReview.builder()
+                .user(user)
+                .benefit(benefit)
+                .facility(findFacility(benefitReviewRequestDTO.getFacilityId()))
+                .content(benefitReviewRequestDTO.getContent())
+                .build();
+
+        benefitReviewRepository.save(benefitReview);
+        return benefitReview.getId();
     }
 
     @Override
