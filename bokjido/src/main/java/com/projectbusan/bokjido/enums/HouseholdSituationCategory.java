@@ -1,5 +1,7 @@
 package com.projectbusan.bokjido.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum HouseholdSituationCategory {
     LOW_INCOME,
     DISABLED,
@@ -7,5 +9,10 @@ public enum HouseholdSituationCategory {
     MULTIPLE_CHILDREN,
     MULTICULTURAL,
     NORTH_KOREAN_DEFECTORS,
-    VETERANS
+    VETERANS;
+
+    @JsonCreator
+    public static HouseholdSituationCategory from(String s){
+        return HouseholdSituationCategory.valueOf(s.toUpperCase());
+    }
 }

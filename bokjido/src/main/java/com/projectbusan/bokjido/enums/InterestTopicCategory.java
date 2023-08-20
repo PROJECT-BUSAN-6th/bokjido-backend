@@ -1,5 +1,7 @@
 package com.projectbusan.bokjido.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum InterestTopicCategory {
     PHYSICAL_HEALTH,
     LIFE_SUPPORT,
@@ -14,5 +16,10 @@ public enum InterestTopicCategory {
     PREGNANCY_OR_CHILDBIRTH,
     EDUCATION,
     PROTECTION_OR_CARE,
-    LAW
+    LAW;
+
+    @JsonCreator
+    public static InterestTopicCategory from(String s){
+        return InterestTopicCategory.valueOf(s.toUpperCase());
+    }
 }
