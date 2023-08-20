@@ -96,11 +96,10 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Override
     public Long createReview(User user, BenefitReviewRequestDTO benefitReviewRequestDTO) {
         Benefit benefit = findBenefits(benefitReviewRequestDTO.getServiceId());
-
         BenefitReview benefitReview = BenefitReview.builder()
                 .user(user)
                 .benefit(benefit)
-                .facility(findFacility(benefitReviewRequestDTO.getFacilityId()))
+                .facility(benefitReviewRequestDTO.getFacilityId() == null ? null : findFacility(benefitReviewRequestDTO.getFacilityId()))
                 .content(benefitReviewRequestDTO.getContent())
                 .build();
 
