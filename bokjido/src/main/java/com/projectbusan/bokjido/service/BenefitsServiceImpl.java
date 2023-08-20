@@ -110,7 +110,8 @@ public class BenefitsServiceImpl implements BenefitsService {
 
     @Override
     public Page<BenefitReviewResponseDTO> getReview(Long serviceId, Pageable pageable) {
-        return null;
+        Page<BenefitReview> benefitReviews = benefitReviewRepository.findByWelfareBenefitId(serviceId, pageable);
+        return benefitReviews.map(BenefitReviewResponseDTO::toDto);
     }
 
     private User findUser(Long id){
