@@ -1,9 +1,16 @@
 package com.projectbusan.bokjido.service;
 
 import com.projectbusan.bokjido.dto.*;
+import com.projectbusan.bokjido.entity.BenefitReview;
+import com.projectbusan.bokjido.entity.Facility;
 import com.projectbusan.bokjido.entity.User;
 import com.projectbusan.bokjido.entity.Benefit;
+import com.projectbusan.bokjido.exception.CustomException;
+import com.projectbusan.bokjido.exception.ErrorCode;
+import com.projectbusan.bokjido.repository.BenefitReviewRepository;
 import com.projectbusan.bokjido.repository.BenefitsRepository;
+import com.projectbusan.bokjido.repository.FacilityRepository;
+import com.projectbusan.bokjido.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +26,9 @@ import java.util.stream.Collectors;
 public class BenefitsServiceImpl implements BenefitsService {
 
     private final BenefitsRepository benefitsRepository;
+    private final BenefitReviewRepository benefitReviewRepository;
+    private final UserRepository userRepository;
+    private final FacilityRepository facilityRepository;
 
 
     @Override
@@ -90,6 +100,27 @@ public class BenefitsServiceImpl implements BenefitsService {
     @Override
     public Page<BenefitReviewResponseDTO> getReview(Long serviceId, Pageable pageable) {
         return null;
+    }
+
+    private User findUser(Long id){
+        return userRepository.findById(id).orElseThrow(()
+                -> new CustomException(ErrorCode.USER_NOT_FOUND_ERROR, "해당 사용자는 존재하지 않습니다."));
+    }
+
+    private Benefit findBenefits(Long id){
+        return benefitsRepository.findById(id).orElseThrow(()
+                -> new CustomException(ErrorCode.BENEFITS_NOT_FOUND_ERROR, "해당 복지 서비스는 존재하지 않습니다."));
+    }
+
+    private Facility findFacility(Long id){
+        return facilityRepository.findById(id).orElseThrow(()
+                -> new CustomException(ErrorCode.BENEFITS_NOT_FOUND_ERROR, "해당 복지 시설은 존재하지 않습니다."));
+    }
+
+
+    private BenefitReview findBenefitReview(Long id){
+        return benefitReviewRepository.findById(id).orElseThrow(()
+                -> new CustomException(ErrorCode.BENEFIT_REVIEW_NOT_FOUND_ERROR, "해당 복지 서비스의 리뷰는 존재하지 않습니다."));
     }
 
 }
