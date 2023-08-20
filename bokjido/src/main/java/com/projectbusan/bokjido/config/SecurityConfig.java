@@ -16,9 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.stream.Stream;
 
@@ -39,7 +37,7 @@ public class SecurityConfig {
 
 
     private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**"
-            , "/api-docs/**", "/api/auth/**", "/api/facility/**" };
+            , "/api-docs/**", "/api/auth/**", "/api/facility/**", "/api/service/**", "/api/user/**" };
 
     private final String[] allowedForUser = {"/api/service/loadall"};
 
