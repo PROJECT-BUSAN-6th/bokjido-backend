@@ -6,8 +6,13 @@ import com.projectbusan.bokjido.entity.Benefit;
 import com.projectbusan.bokjido.repository.BenefitsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +47,29 @@ public class BenefitsServiceImpl implements BenefitsService {
 
     @Override
     public Page<BenefitMainResponseDTO> getService(BenefitRequestDTO requestDto, Pageable pageable) {
-        return null;
+        List<Benefit> benefits = benefitsRepository.findDistinctByConditions(
+                requestDto.getLocality(),
+                requestDto.getAge(),
+                requestDto.getKeyword()
+        );
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Benefit> subList;
+        if (benefits.size() < startItem) {
+            subList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, benefits.size());
+            subList = benefits.subList(startItem, toIndex);
+        }
+
+        List<BenefitMainResponseDTO> responseDTOs = subList.stream()
+                .map(BenefitMainResponseDTO::toDto)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(responseDTOs, pageable, benefits.size());
     }
 
     @Override
@@ -64,4 +91,5 @@ public class BenefitsServiceImpl implements BenefitsService {
     public Page<BenefitReviewResponseDTO> getReview(Long serviceId, Pageable pageable) {
         return null;
     }
+
 }
