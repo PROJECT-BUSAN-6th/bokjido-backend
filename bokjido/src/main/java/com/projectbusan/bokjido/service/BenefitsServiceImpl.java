@@ -84,7 +84,8 @@ public class BenefitsServiceImpl implements BenefitsService {
 
     @Override
     public BenefitDetailsResponseDTO getServiceById(Long serviceId) {
-        return null;
+        Benefit benefit = findBenefits(serviceId);
+        return BenefitDetailsResponseDTO.toDto(benefit);
     }
 
     @Override
