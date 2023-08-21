@@ -1,11 +1,14 @@
 package com.projectbusan.bokjido.entity;
 
+import com.projectbusan.bokjido.dto.FacilityReviewDTO;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Table(name = "facility_review")
 public class FacilityReview extends BaseTimeEntity {
@@ -13,15 +16,15 @@ public class FacilityReview extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facility_id")
     private Facility facility;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "benefit_id")
     private Benefit benefit;
 
@@ -37,6 +40,16 @@ public class FacilityReview extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-
+//    @Builder
+//    public FacilityReview(Long id, Long userId, Long facilityId, Long benefitId, int clean, int kindness, int parking, String content) {
+//        this.id = id;
+//        this.userId = userId;
+//        this.facilityId = facilityId;
+//        this.benefitId = benefitId;
+//        this.clean = clean;
+//        this.kindness = kindness;
+//        this.parking = parking;
+//        this.content = content;
+//    }
 
 }
