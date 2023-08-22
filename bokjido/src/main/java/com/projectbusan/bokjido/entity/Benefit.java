@@ -1,9 +1,6 @@
 package com.projectbusan.bokjido.entity;
 
-import com.projectbusan.bokjido.enums.HouseholdSituationCategory;
-import com.projectbusan.bokjido.enums.InterestTopicCategory;
-import com.projectbusan.bokjido.enums.LifeCycleCategory;
-import com.projectbusan.bokjido.enums.WelfareBenefitsCategory;
+import com.projectbusan.bokjido.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +24,10 @@ public class Benefit extends BaseTimeEntity{
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private WelfareBenefitsCategory welfareBenefitsCategory;
+    private BenefitRolesCategory benefitRoleCategory;
+
+    @Enumerated(EnumType.STRING)
+    private BenefitsCategory benefitsCategory;
 
     @Enumerated(EnumType.STRING)
     private LifeCycleCategory lifeCycleCategory;

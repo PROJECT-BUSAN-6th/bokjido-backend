@@ -2,7 +2,7 @@ package com.projectbusan.bokjido.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public enum WelfareBenefitsCategory {
+public enum BenefitsCategory {
     WELFARE_FACILITIES,
     CHILDCARE_EDUCATIONAL_FACILITIES,
     PUBLIC_INSTITUTIONS,
@@ -10,7 +10,7 @@ public enum WelfareBenefitsCategory {
     CONVENIENCE_FACILITIES;
 
     @JsonCreator
-    public static WelfareBenefitsCategory from(String s){
-        return WelfareBenefitsCategory.valueOf(s.toUpperCase());
+    public static BenefitsCategory from(String s){
+        return BenefitsCategory.valueOf(s.toUpperCase());
     }
 }
