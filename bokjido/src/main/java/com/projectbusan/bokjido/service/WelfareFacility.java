@@ -42,6 +42,11 @@ public class WelfareFacility {
     @Transactional
     public Optional<Facility> searchById(Long id) { return facilityRepository.findById(id); }
 
+    // <<-- 복지 건물 조회 By 주소 -->>
+    public List<Facility> searchByLocation(String searchTerm) {
+        return facilityRepository.findFacilitiesByLocationContaining(searchTerm);
+    }
+
     // <<-- 전체 복지 건물 조회 -->>
     public List<Facility> loadAll() { return facilityRepository.findAll(); }
 

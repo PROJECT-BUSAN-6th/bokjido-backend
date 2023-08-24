@@ -49,6 +49,15 @@ public class FacilityController {
         } return new ResponseEntity(facilityList, HttpStatus.OK);
     }
 
+    // <<-- 복지 시설 단일 조회 By 주소 -->>
+    @Operation(summary = "해당 주소를 포함하는 시설 전체 조회")
+    @GetMapping("/search/{location}")
+    public @ResponseBody ResponseEntity searchByLocation(@RequestParam(value = "location") String location) {
+        List<Facility> facilityList = welfareFacility.searchByLocation(location);
+
+        return ResponseEntity.ok(facilityList);
+    }
+
     // <<-- DB에 있는 전체 복지 시설 조회 -->>
     @Operation(summary = "DB의 전체 복지 시설 조회")
     @GetMapping("/loadall")
