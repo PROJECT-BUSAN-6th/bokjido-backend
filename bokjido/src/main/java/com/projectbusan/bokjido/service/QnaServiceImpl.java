@@ -9,7 +9,6 @@ import com.projectbusan.bokjido.exception.ErrorCode;
 import com.projectbusan.bokjido.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -55,18 +54,7 @@ public class QnaServiceImpl implements QnaService{
             qna.increaseViews();
         }
         qnaRepository.saveAll(qnaPage.getContent());
-
-        List<QnaDetailsResponseDTO> qnaDetailsDTOs = qnaPage.getContent().stream()
-                .map(qna -> {
-                    List<CommentResponseDTO> commentDTOs = qna.getComments().stream()
-                            .map(CommentResponseDTO::toDto)
-                            .collect(Collectors.toList());
-
-                    return QnaDetailsResponseDTO.toDto(qna, commentDTOs);
-                })
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(qnaDetailsDTOs, pageable, qnaPage.getTotalElements());
+        return QnaDetailsResponseDTO.toDtoList(qnaPage);
     }
 
 

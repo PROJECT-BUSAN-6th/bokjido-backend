@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -37,4 +39,18 @@ public class QnaDetailsResponseDTO {
                 .build();
     }
 
+    public static Page<QnaDetailsResponseDTO> toDtoList(Page<Qna> qnaPage){
+        return qnaPage.map(m -> QnaDetailsResponseDTO.builder()
+                .id(m.getId())
+                .userId(m.getUser().getUserid())
+                .title(m.getTitle())
+                .content(m.getContent())
+                .views(m.getViews())
+                .comments(m.getComments().stream()
+                        .map(CommentResponseDTO::toDto)
+                        .collect(Collectors.toList()))
+                .createdAt(m.getCreatedAt())
+                .modifiedAt(m.getModifiedAt())
+                .build());
+    }
 }
