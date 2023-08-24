@@ -1,0 +1,36 @@
+package com.projectbusan.bokjido.dto;
+
+import com.projectbusan.bokjido.entity.Comment;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CommentResponseDTO {
+    private Long id;
+    private String userId;
+    private String content;
+    private String password;
+    private Boolean isDeleted;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+
+    @Builder
+    public static CommentResponseDTO toDto(Comment comment) {
+        return CommentResponseDTO.builder()
+                .id(comment.getId())
+                .userId(comment.getUser().getUserid())
+                .content(comment.getContent())
+                .password(comment.getPassword())
+                .isDeleted(comment.getIsDeleted())
+                .createdAt(comment.getCreatedAt())
+                .modifiedAt(comment.getModifiedAt())
+                .build();
+    }
+}
