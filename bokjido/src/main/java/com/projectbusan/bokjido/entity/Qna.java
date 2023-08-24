@@ -34,5 +34,9 @@ public class Qna extends BaseTimeEntity{
     private String password;
 
     private Long views;
-    
+
+
+    public void increaseViews() {
+        this.views++;
+    }
 }
