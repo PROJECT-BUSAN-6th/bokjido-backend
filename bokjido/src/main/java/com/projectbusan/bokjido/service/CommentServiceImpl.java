@@ -18,6 +18,7 @@ public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
     private final QnaRepository qnaRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -48,12 +49,20 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Long deleteComment(Long commentId) {
+    public Long deleteComment(Long commentId, User user) {
         Comment comment = findComment(commentId);
+        User getUser = findUser(comment.getUser().getId());
+        if(!getUser.equals(user)){
+            throw new CustomException(ErrorCode.PERMISSION_DENIED_FOR_DELETION, "본인이 작성한 게시물이 아니므로, 삭제 권한이 없습니다.");
+        }
         commentRepository.delete(comment);
         return comment.getId();
     }
 
+    private User findUser(Long id){
+        return userRepository.findById(id).orElseThrow(()
+                -> new CustomException(ErrorCode.USER_NOT_FOUND_ERROR, "해당 사용자는 존재하지 않습니다."));
+    }
 
     private Qna findQna(Long id){
         return qnaRepository.findById(id).orElseThrow(()

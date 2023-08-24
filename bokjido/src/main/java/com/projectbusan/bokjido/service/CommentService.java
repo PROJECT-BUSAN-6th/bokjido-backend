@@ -10,6 +10,6 @@ public interface CommentService {
     Long createComment(Long qnaId, User user, CommentCreateRequestDTO commentCreateRequestDto);
     Page<CommentResponseDTO> getComment(Long qnaId, Pageable pageable);
     Page<CommentResponseDTO> getCommentByUser(User user, Pageable pageable);
-    Long deleteComment(Long commentId);
+    Long deleteComment(Long commentId, User user);
 
 }
