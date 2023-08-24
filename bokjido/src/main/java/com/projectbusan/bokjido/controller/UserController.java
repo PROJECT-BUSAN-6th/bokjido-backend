@@ -1,6 +1,8 @@
 package com.projectbusan.bokjido.controller;
 
 import com.projectbusan.bokjido.dto.AuthDTO;
+import com.projectbusan.bokjido.entity.Post;
+import com.projectbusan.bokjido.entity.User;
 import com.projectbusan.bokjido.service.AuthService;
 import com.projectbusan.bokjido.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "1. 유저 페이지", description = "유저 관련 API")
 @RestController
@@ -120,10 +124,16 @@ public class UserController {
                 .build();
     }
 
-/*    // 모든 회원 조회
+    // 모든 회원 조회
     @Operation(summary = "모든 회원 조회")
-    @GetMapping("/allusers")
-    public List<User> userList() {
+    @GetMapping("/loadall")
+    public @ResponseBody ResponseEntity loadAll() {
+        List<User> userList;
 
-    }*/
+        try{
+            userList = userService.loadAll();
+        } catch(IllegalStateException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } return new ResponseEntity(userList, HttpStatus.OK);
+    }
 }
