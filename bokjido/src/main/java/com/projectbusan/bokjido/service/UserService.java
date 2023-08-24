@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,13 @@ public class UserService {
     @Transactional
     public void register(AuthDTO.SignupDto signupDto) {
         validateDuplicateUser(signupDto.getUserid()); // 중복 회원 검증
+
         User user = User.register(signupDto);
+
+        if (signupDto.getInterestTopicCategory() != null) {
+            user.setInterestTopicCategory(Arrays.toString(signupDto.getInterestTopicCategory()));
+        }
+
         userRepository.save(user);
     }
 
@@ -40,11 +44,17 @@ public class UserService {
     }
 
     // <<-- 전체 회원 조회 -->>
-    public List<User> loadAll() {
+    public List<User> getAll() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(String userId) {
-        return userRepository.findByUserid(userId);
+    public List<String> findInterestTopic(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        String interestTopic = user.get().getInterestTopicCategory();
+        if (interestTopic != null) {
+            String[] interestArray = interestTopic.substring(1, interestTopic.length() -1).split(", ");
+            return Arrays.asList(interestArray);
+        }
+        return Collections.emptyList();
     }
 }

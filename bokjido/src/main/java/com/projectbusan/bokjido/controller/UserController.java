@@ -124,16 +124,25 @@ public class UserController {
                 .build();
     }
 
-    // 모든 회원 조회
+    // <<-- 모든 회원 조회
     @Operation(summary = "모든 회원 조회")
     @GetMapping("/loadall")
-    public @ResponseBody ResponseEntity loadAll() {
+    public @ResponseBody ResponseEntity getAll() {
         List<User> userList;
 
         try{
-            userList = userService.loadAll();
+            userList = userService.getAll();
         } catch(IllegalStateException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         } return new ResponseEntity(userList, HttpStatus.OK);
+    }
+
+    // <<-- 해당 ID의 관심주제 조회 -->>
+    @Operation(summary = "해당 ID의 관심주제 조회")
+    @GetMapping("/load/{id}")
+    public ResponseEntity getInterestTopicById(@PathVariable("id") Long id) {
+        List<String> interestList = userService.findInterestTopic(id);
+        return ResponseEntity.ok(interestList);
+
     }
 }

@@ -1,7 +1,6 @@
 package com.projectbusan.bokjido.dto;
 
 import com.projectbusan.bokjido.enums.HouseholdSituationCategory;
-import com.projectbusan.bokjido.enums.InterestTopicCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -54,10 +53,10 @@ public class AuthDTO {
         private HouseholdSituationCategory householdSituationCategory;
 
         @Schema(description = "관심주제", example = "PHYSICAL_HEALTH")
-        private InterestTopicCategory interestTopicCategory;
+        private String[] interestTopicCategory;
 
         @Builder
-        public SignupDto(String userid, String password, String username, String email, String phone, LocalDate birth, String gender, HouseholdSituationCategory householdSituationCategory, InterestTopicCategory interestTopicCategory) {
+        public SignupDto(String userid, String password, String username, String email, String phone, LocalDate birth, String gender, HouseholdSituationCategory householdSituationCategory, String[] interestTopicCategory) {
             this.userid = userid;
             this.password = password;
             this.username = username;

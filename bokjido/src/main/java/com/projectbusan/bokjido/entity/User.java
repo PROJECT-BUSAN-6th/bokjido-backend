@@ -2,13 +2,13 @@ package com.projectbusan.bokjido.entity;
 
 import com.projectbusan.bokjido.dto.AuthDTO;
 import com.projectbusan.bokjido.enums.HouseholdSituationCategory;
-import com.projectbusan.bokjido.enums.InterestTopicCategory;
 import com.projectbusan.bokjido.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Data
 @Builder
@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+//            (strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String userid;
@@ -39,8 +40,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private HouseholdSituationCategory householdSituationCategory;
 
-    @Enumerated(EnumType.STRING)
-    private InterestTopicCategory interestTopicCategory;
+    private String interestTopicCategory;
 
     private Role role;
 
@@ -49,7 +49,7 @@ public class User {
     private LocalDateTime modify_date;
 
     @Builder
-    public User(Long id, String userid, String username, String password, String email, String phone, LocalDate birth, String gender, HouseholdSituationCategory householdSituationCategory, InterestTopicCategory interestTopicCategory, Role role, LocalDateTime create_date, LocalDateTime modify_date) {
+    public User(Long id, String userid, String username, String password, String email, String phone, LocalDate birth, String gender, HouseholdSituationCategory householdSituationCategory, String interestTopicCategory, Role role, LocalDateTime create_date, LocalDateTime modify_date) {
         this.id = id;
         this.userid = userid;
         this.username = username;
@@ -75,7 +75,7 @@ public class User {
                 .birth(signupDto.getBirth())
                 .gender(signupDto.getGender())
                 .householdSituationCategory(signupDto.getHouseholdSituationCategory())
-                .interestTopicCategory(signupDto.getInterestTopicCategory())
+                .interestTopicCategory(Arrays.toString(signupDto.getInterestTopicCategory()))
                 .role(Role.USER)
                 .create_date(LocalDateTime.now())
                 .build();
