@@ -8,12 +8,9 @@ import com.projectbusan.bokjido.exception.ErrorCode;
 import com.projectbusan.bokjido.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,11 +38,13 @@ public class CommentServiceImpl implements CommentService{
     public Page<CommentResponseDTO> getComment(Long qnaId, Pageable pageable) {
         Qna qna = findQna(qnaId);
         Page<Comment> commentPage = commentRepository.findByQna(qna, pageable);
-        List<CommentResponseDTO> commentDTOs = commentPage.getContent().stream()
-                .map(CommentResponseDTO::toDto)
-                .collect(Collectors.toList());
+        return CommentResponseDTO.toDtoList(commentPage);
+    }
 
-        return new PageImpl<>(commentDTOs, pageable, commentPage.getTotalElements());
+    @Override
+    public Page<CommentResponseDTO> getCommentByUser(User user, Pageable pageable) {
+        Page<Comment> commentPage = commentRepository.findByUser(user, pageable);
+        return CommentResponseDTO.toDtoList(commentPage);
     }
 
     @Override

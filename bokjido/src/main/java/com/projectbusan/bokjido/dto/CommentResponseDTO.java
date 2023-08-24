@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 
@@ -32,5 +33,17 @@ public class CommentResponseDTO {
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
                 .build();
+    }
+
+    public static Page<CommentResponseDTO> toDtoList(Page<Comment> commentPage){
+        return commentPage.map(m -> CommentResponseDTO.builder()
+                .id(m.getId())
+                .userId(m.getUser().getUserid())
+                .content(m.getContent())
+                .password(m.getPassword())
+                .isDeleted(m.getIsDeleted())
+                .createdAt(m.getCreatedAt())
+                .modifiedAt(m.getModifiedAt())
+                .build());
     }
 }

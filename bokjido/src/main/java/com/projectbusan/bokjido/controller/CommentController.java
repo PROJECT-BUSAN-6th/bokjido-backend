@@ -30,6 +30,11 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getComment(qnaId, pageable));
     }
 
+    @GetMapping("/user/comment")
+    public ResponseEntity<Page<CommentResponseDTO>> getCommentByUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        return ResponseEntity.ok(commentService.getCommentByUser(userDetails.getUser(), pageable));
+    }
+
     @DeleteMapping("/comment/{commentId}/delete")
     public ResponseEntity<Long> deleteComment(@PathVariable Long commentId){
         return ResponseEntity.ok(commentService.deleteComment(commentId));
