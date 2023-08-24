@@ -94,7 +94,6 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
 
-    // <<-- 토큰으로부터 정보 추출 -->>
     private String convertListToJson(List<String> list) {
         try {
             return new ObjectMapper().writeValueAsString(list);
@@ -104,6 +103,7 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
+    // <<-- 토큰으로부터 정보 추출 -->>
     public Claims getClaims(String token) {
         try {
             return Jwts.parserBuilder()
