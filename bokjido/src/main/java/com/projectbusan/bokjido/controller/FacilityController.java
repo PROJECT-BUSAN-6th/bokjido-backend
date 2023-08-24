@@ -38,8 +38,8 @@ public class FacilityController {
 
     // <<-- 복지 시설 단일 조회 By 아이디 -->>
     @Operation(summary = "시설 아이디를 통해 단일 조회")
-    @GetMapping("/")
-    public @ResponseBody ResponseEntity searchById(@RequestParam(value = "id") Long id, Model model) {
+    @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity searchById(@PathVariable(value = "id") Long id) {
         Optional<Facility> facilityList;
 
         try {
@@ -52,7 +52,7 @@ public class FacilityController {
     // <<-- 복지 시설 단일 조회 By 주소 -->>
     @Operation(summary = "해당 주소를 포함하는 시설 전체 조회")
     @GetMapping("/search/{location}")
-    public @ResponseBody ResponseEntity searchByLocation(@RequestParam(value = "location") String location) {
+    public @ResponseBody ResponseEntity searchByLocation(@PathVariable(value = "location") String location) {
         List<Facility> facilityList = welfareFacility.searchByLocation(location);
 
         return ResponseEntity.ok(facilityList);
@@ -80,8 +80,8 @@ public class FacilityController {
 
     // <<-- 복지 시설 리뷰 조회 -->>
     @Operation(summary = "복지 시설 리뷰 조회")
-    @GetMapping("/review/")
-    public Stream<FacilityReviewDTO.FacilityReviewResponseDTO> getReview(@RequestParam(value = "facilityId") Long facilityId) {
+    @GetMapping("/review/{facilityId}")
+    public Stream<FacilityReviewDTO.FacilityReviewResponseDTO> getReview(@PathVariable(value = "facilityId") Long facilityId) {
         List <FacilityReview> facilityReviews;
         facilityReviews = welfareFacility.getReview(facilityId);
 
