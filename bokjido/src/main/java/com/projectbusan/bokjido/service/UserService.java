@@ -40,7 +40,7 @@ public class UserService {
     }
 
     // <<-- 전체 회원 조회 -->>
-    public List<User> findUsers() {
+    public List<User> loadAll() {
         return userRepository.findAll();
     }
 
