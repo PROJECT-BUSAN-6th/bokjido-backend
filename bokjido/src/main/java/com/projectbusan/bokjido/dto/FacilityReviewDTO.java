@@ -4,6 +4,8 @@ import com.projectbusan.bokjido.entity.Facility;
 import com.projectbusan.bokjido.entity.FacilityReview;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -23,12 +25,18 @@ public class FacilityReviewDTO {
         private Long benefitId;
 
         @Schema(description = "청결도 별점", example = "5")
+        @Min(value = 1, message = "별점은 최소 1이상이어야 합니다.")
+        @Max(value = 5, message = "별점은 최대 5까지 허용됩니다.")
         private int clean;
 
         @Schema(description = "친절도 별점", example = "5")
+        @Min(value = 1, message = "별점은 최소 1이상이어야 합니다.")
+        @Max(value = 5, message = "별점은 최대 5까지 허용됩니다.")
         private int kindness;
 
         @Schema(description = "주차장 별점", example = "5")
+        @Min(value = 1, message = "별점은 최소 1이상이어야 합니다.")
+        @Max(value = 5, message = "별점은 최대 5까지 허용됩니다.")
         private int parking;
 
         @Schema(description = "내용", example = "본문 내용")
