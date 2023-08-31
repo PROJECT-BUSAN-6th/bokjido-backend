@@ -24,11 +24,12 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class WelfareFacility {
     @Autowired
-    private FacilityRepository facilityRepository;
+    private final FacilityRepository facilityRepository;
 
     @Autowired
-    private FacilityReviewRepository facilityReviewRepository;
+    private final FacilityReviewRepository facilityReviewRepository;
 
+    @Autowired
     private final BenefitsRepository benefitsRepository;
 
     // <<-- 복지 건물 생성 -->>
@@ -78,6 +79,6 @@ public class WelfareFacility {
 
     private Facility findFacility(Long id){
         return facilityRepository.findById(id).orElseThrow(()
-                -> new CustomException(ErrorCode.BENEFITS_NOT_FOUND_ERROR, "해당 복지 시설은 존재하지 않습니다."));
+                -> new CustomException(ErrorCode.FACILITY_NOT_FOUND_ERROR, "해당 복지 시설은 존재하지 않습니다."));
     }
 }
