@@ -1,9 +1,6 @@
 package com.projectbusan.bokjido.dto;
 
-import com.projectbusan.bokjido.enums.HouseholdSituationCategory;
-import com.projectbusan.bokjido.enums.InterestTopicCategory;
-import com.projectbusan.bokjido.enums.LifeCycleCategory;
-import com.projectbusan.bokjido.enums.WelfareBenefitsCategory;
+import com.projectbusan.bokjido.enums.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +15,11 @@ public class BenefitCreateRequestDTO {
     @NotBlank(message = "복지 서비스의 이름은 필요합니다.")
     private String name;
 
+    @NotBlank(message = "복지 서비스의 담당부처는 필요합니다.")
+    private BenefitRolesCategory benefitRolesCategory;
+
     @NotBlank(message = "복지 서비스에 해당하는 카테고리가 필요합니다.")
-    private WelfareBenefitsCategory welfareBenefitsCategory;
+    private BenefitsCategory benefitsCategory;
 
     @NotBlank(message = "복지 서비스에 해당하는 생애주기가 필요합니다.")
     private LifeCycleCategory lifeCycleCategory;
