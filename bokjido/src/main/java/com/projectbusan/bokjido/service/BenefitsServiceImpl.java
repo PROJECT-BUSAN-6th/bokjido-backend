@@ -17,8 +17,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,6 +89,43 @@ public class BenefitsServiceImpl implements BenefitsService {
     public BenefitDetailsResponseDTO getServiceById(Long serviceId) {
         Benefit benefit = findBenefits(serviceId);
         return BenefitDetailsResponseDTO.toDto(benefit);
+    }
+
+    @Override
+    public Page<BenefitMainResponseDTO> getServiceByRandom(Pageable pageable) {
+        List<Benefit> benefitList = benefitsRepository.findAll();
+        if (benefitList.isEmpty()) {
+            return Page.empty();
+        }
+
+        Collections.shuffle(benefitList, new Random());
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Benefit> pageList;
+
+        if (benefitList.size() < startItem) {
+            pageList = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, benefitList.size());
+            pageList = benefitList.subList(startItem, toIndex);
+        }
+
+        List<BenefitMainResponseDTO> benefitDtoList = new ArrayList<>();
+        for (Benefit benefit : pageList) {
+            BenefitMainResponseDTO dto = BenefitMainResponseDTO.builder()
+                    .id(benefit.getId())
+                    .name(benefit.getName())
+                    .applyTarget(benefit.getApplyTarget())
+                    .summary(benefit.getSummary())
+                    .build();
+
+            benefitDtoList.add(dto);
+        }
+
+        return new PageImpl<>(benefitDtoList, pageable, benefitList.size());
     }
 
     @Override

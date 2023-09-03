@@ -9,7 +9,9 @@ public interface BenefitsService {
     Long createService(User user, BenefitCreateRequestDTO benefitCreateRequestDTO);
     Page<BenefitMainResponseDTO> getService(BenefitRequestDTO requestDto, Pageable pageable);
     BenefitDetailsResponseDTO getServiceById(Long serviceId);
+    Page<BenefitMainResponseDTO> getServiceByRandom(Pageable pageable);
     Page<BenefitMainResponseDTO> getServiceByUser(User user, Pageable pageable);
     Long createReview(User user, BenefitReviewRequestDTO benefitReviewRequestDTO);
     Page<BenefitReviewResponseDTO> getReview(Long serviceId, Pageable pageable);
+
 }
