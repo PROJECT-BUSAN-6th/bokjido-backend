@@ -5,22 +5,24 @@ import com.projectbusan.bokjido.entity.BenefitReview;
 import com.projectbusan.bokjido.entity.Facility;
 import com.projectbusan.bokjido.entity.User;
 import com.projectbusan.bokjido.entity.Benefit;
+import com.projectbusan.bokjido.enums.HouseholdSituationCategory;
+import com.projectbusan.bokjido.enums.LifeCycleCategory;
 import com.projectbusan.bokjido.exception.CustomException;
 import com.projectbusan.bokjido.exception.ErrorCode;
 import com.projectbusan.bokjido.repository.BenefitReviewRepository;
 import com.projectbusan.bokjido.repository.BenefitsRepository;
 import com.projectbusan.bokjido.repository.FacilityRepository;
-import com.projectbusan.bokjido.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +31,6 @@ public class BenefitsServiceImpl implements BenefitsService {
 
     private final BenefitsRepository benefitsRepository;
     private final BenefitReviewRepository benefitReviewRepository;
-    private final UserRepository userRepository;
     private final FacilityRepository facilityRepository;
 
 
@@ -130,9 +131,125 @@ public class BenefitsServiceImpl implements BenefitsService {
 
     @Override
     public Page<BenefitMainResponseDTO> getServiceByUser(User user, Pageable pageable) {
-        return null;
+        List<Benefit> allBenefits = benefitsRepository.findAll();
+        if (allBenefits.isEmpty()) {
+            return null;
+        }
+
+        List<Benefit> recommendedBenefits = allBenefits.stream()
+                .filter(benefit -> isBenefitRecommendedForUser(user, benefit))
+                .sorted(Comparator.comparingInt(benefit -> countMatchingConditions(user, (Benefit) benefit)).reversed())
+                .collect(Collectors.toList());
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        int endItem = Math.min(startItem + pageSize, recommendedBenefits.size());
+
+        List<Benefit> subList = recommendedBenefits.subList(startItem, endItem);
+
+        List<BenefitMainResponseDTO> resultBenefits = subList.stream()
+                .map(BenefitMainResponseDTO::toDto)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(resultBenefits, pageable, recommendedBenefits.size());
     }
 
+    private int countMatchingConditions(User user, Benefit benefit) {
+        int matchingConditions = 0;
+
+        if (isUserAgeMatching(user, benefit)) {
+            matchingConditions++;
+        }
+
+        if (isUserGenderMatching(user, benefit)) {
+            matchingConditions++;
+        }
+
+        if (isUserHouseholdSituationMatching(user, benefit)) {
+            matchingConditions++;
+        }
+
+        if (isUserAddressMatching(user, benefit)) {
+            matchingConditions++;
+        }
+
+        return matchingConditions;
+    }
+
+    private boolean isBenefitRecommendedForUser(User user, Benefit benefit) {
+        LocalDate userBirth = user.getBirth();
+        if (userBirth == null) {
+            return false;
+        }
+
+        return isUserAgeMatching(user, benefit) ||
+                isUserGenderMatching(user, benefit) ||
+                isUserHouseholdSituationMatching(user, benefit) ||
+                isUserAddressMatching(user, benefit);
+    }
+
+    private boolean isUserAgeMatching(User user, Benefit benefit) {
+        LocalDate userBirth = user.getBirth();
+        if (userBirth == null) {
+            return false;
+        }
+
+        int userAge = calculateUserAge(userBirth);
+        LifeCycleCategory benefitLifeCycleCategory = benefit.getLifeCycleCategory();
+        if (benefitLifeCycleCategory == LifeCycleCategory.INFANT && userAge >= 0 && userAge <= 6) {
+            return true;
+        } else if (benefitLifeCycleCategory == LifeCycleCategory.CHILD && userAge >= 7 && userAge <= 12) {
+            return true;
+        } else if (benefitLifeCycleCategory == LifeCycleCategory.TEENAGER && userAge >= 13 && userAge <= 18) {
+            return true;
+        } else if (benefitLifeCycleCategory == LifeCycleCategory.YOUTH && userAge >= 19 && userAge <= 34) {
+            return true;
+        } else if (benefitLifeCycleCategory == LifeCycleCategory.MIDDLE_AGED && userAge >= 35 && userAge <= 64) {
+            return true;
+        } else return benefitLifeCycleCategory == LifeCycleCategory.OLD_AGED && userAge >= 65;
+    }
+
+    private boolean isUserGenderMatching(User user, Benefit benefit) {
+        String userGender = user.getGender();
+        String applyTarget = benefit.getApplyTarget();
+        return userGender != null && !userGender.isBlank() && applyTarget.contains(userGender);
+    }
+
+    private boolean isUserHouseholdSituationMatching(User user, Benefit benefit) {
+        HouseholdSituationCategory userHouseholdSituation = user.getHouseholdSituationCategory();
+        return userHouseholdSituation != null && userHouseholdSituation == benefit.getHouseholdSituationCategory();
+    }
+
+    private boolean isUserAddressMatching(User user, Benefit benefit) {
+        String userAddress = user.getAddress();
+        String inquiryStation = benefit.getInquiryStation();
+
+        if (userAddress != null && !userAddress.isBlank()) {
+            List<String> userCities = extractCitiesFromAddress(userAddress);
+            for (String city : userCities) {
+                if (inquiryStation.contains(city)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private int calculateUserAge(LocalDate birthDate) {
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(birthDate, currentDate).getYears();
+    }
+
+    private List<String> extractCitiesFromAddress(String address) {
+        List<String> cities = new ArrayList<>();
+        Pattern pattern = Pattern.compile("(서울|부산|대구|인천|광주|대전|울산|세종|경기도|강원도|충청북도|충청남도|전라북도|전라남도|경상북도|경상남도|제주특별자치도)\\s*");
+        Matcher matcher = pattern.matcher(address);
+        while (matcher.find()) {
+            cities.add(matcher.group());
+        }
+        return cities;
+    }
     @Override
     public Long createReview(User user, BenefitReviewRequestDTO benefitReviewRequestDTO) {
         Benefit benefit = findBenefits(benefitReviewRequestDTO.getServiceId());
@@ -153,11 +270,6 @@ public class BenefitsServiceImpl implements BenefitsService {
         return benefitReviews.map(BenefitReviewResponseDTO::toDto);
     }
 
-    private User findUser(Long id){
-        return userRepository.findById(id).orElseThrow(()
-                -> new CustomException(ErrorCode.USER_NOT_FOUND_ERROR, "해당 사용자는 존재하지 않습니다."));
-    }
-
     private Benefit findBenefits(Long id){
         return benefitsRepository.findById(id).orElseThrow(()
                 -> new CustomException(ErrorCode.BENEFITS_NOT_FOUND_ERROR, "해당 복지 서비스는 존재하지 않습니다."));
@@ -167,11 +279,4 @@ public class BenefitsServiceImpl implements BenefitsService {
         return facilityRepository.findById(id).orElseThrow(()
                 -> new CustomException(ErrorCode.BENEFITS_NOT_FOUND_ERROR, "해당 복지 시설은 존재하지 않습니다."));
     }
-
-
-    private BenefitReview findBenefitReview(Long id){
-        return benefitReviewRepository.findById(id).orElseThrow(()
-                -> new CustomException(ErrorCode.BENEFIT_REVIEW_NOT_FOUND_ERROR, "해당 복지 서비스의 리뷰는 존재하지 않습니다."));
-    }
-
 }
