@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class AuthDTO {
     @Getter
@@ -49,6 +48,9 @@ public class AuthDTO {
         @Schema(description = "성별", example = "남")
         private String gender;
 
+        @Schema(description = "주소", example = "서울특별시 중구 세종대로 110 (태평로1가)")
+        private String address;
+
         @Schema(description = "가구상황", example = "LOW_INCOME")
         private HouseholdSituationCategory householdSituationCategory;
 
@@ -56,7 +58,7 @@ public class AuthDTO {
         private String[] interestTopicCategory;
 
         @Builder
-        public SignupDto(String userid, String password, String username, String email, String phone, LocalDate birth, String gender, HouseholdSituationCategory householdSituationCategory, String[] interestTopicCategory) {
+        public SignupDto(String userid, String password, String username, String email, String phone, LocalDate birth, String gender, String address, HouseholdSituationCategory householdSituationCategory, String[] interestTopicCategory) {
             this.userid = userid;
             this.password = password;
             this.username = username;
@@ -64,6 +66,7 @@ public class AuthDTO {
             this.phone = phone;
             this.birth = birth;
             this.gender = gender;
+            this.address = address;
             this.householdSituationCategory = householdSituationCategory;
             this.interestTopicCategory = interestTopicCategory;
         }
@@ -77,6 +80,7 @@ public class AuthDTO {
             newSignupDto.phone = signupDto.getPhone();
             newSignupDto.birth = signupDto.getBirth();
             newSignupDto.gender = signupDto.getGender();
+            newSignupDto.address = signupDto.getAddress();
             newSignupDto.householdSituationCategory = signupDto.getHouseholdSituationCategory();
             newSignupDto.interestTopicCategory = signupDto.getInterestTopicCategory();
             return newSignupDto;
