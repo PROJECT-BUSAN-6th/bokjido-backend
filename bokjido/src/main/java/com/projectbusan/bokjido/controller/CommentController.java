@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin(originPatterns = "http://localhost:8000") // CORS 정책으로 인해 localhost:8000으로 요청은 받는다는 코드
 public class CommentController {
     private final CommentService commentService;
 
