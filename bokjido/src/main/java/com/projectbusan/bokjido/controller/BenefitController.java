@@ -44,6 +44,9 @@ public class BenefitController {
     @Operation(summary = "복지 서비스 사용자 맞춤 조회")
     @GetMapping("/user/service")
     public ResponseEntity<Page<BenefitMainResponseDTO>> getServiceByUser(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        if(userDetails == null){
+            return ResponseEntity.ok(benefitsService.getServiceByRandom(pageable));
+        }
         return ResponseEntity.ok(benefitsService.getServiceByUser(userDetails.getUser(), pageable));
     }
 

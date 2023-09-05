@@ -37,6 +37,8 @@ public class User {
 
     private String gender;
 
+    private String address;
+
     @Enumerated(EnumType.STRING)
     private HouseholdSituationCategory householdSituationCategory;
 
@@ -49,7 +51,7 @@ public class User {
     private LocalDateTime modify_date;
 
     @Builder
-    public User(Long id, String userid, String username, String password, String email, String phone, LocalDate birth, String gender, HouseholdSituationCategory householdSituationCategory, String interestTopicCategory, Role role, LocalDateTime create_date, LocalDateTime modify_date) {
+    public User(Long id, String userid, String username, String password, String email, String phone, LocalDate birth, String gender, String address, HouseholdSituationCategory householdSituationCategory, String interestTopicCategory, Role role, LocalDateTime create_date, LocalDateTime modify_date) {
         this.id = id;
         this.userid = userid;
         this.username = username;
@@ -58,6 +60,7 @@ public class User {
         this.phone = phone;
         this.birth = birth;
         this.gender = gender;
+        this.address = address;
         this.householdSituationCategory = householdSituationCategory;
         this.interestTopicCategory = interestTopicCategory;
         this.role = role;
@@ -74,6 +77,7 @@ public class User {
                 .phone(signupDto.getPhone())
                 .birth(signupDto.getBirth())
                 .gender(signupDto.getGender())
+                .address(signupDto.getAddress())
                 .householdSituationCategory(signupDto.getHouseholdSituationCategory())
                 .interestTopicCategory(Arrays.toString(signupDto.getInterestTopicCategory()))
                 .role(Role.USER)
