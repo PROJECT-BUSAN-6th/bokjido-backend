@@ -54,7 +54,7 @@ public class AuthDTO {
         @Schema(description = "가구상황", example = "LOW_INCOME")
         private HouseholdSituationCategory householdSituationCategory;
 
-        @Schema(description = "관심주제", example = "PHYSICAL_HEALTH")
+        @Schema(description = "관심주제", example = "[\"PHYSICAL_HEALTH\", \"MENTAL_HEALTH\"]")
         private String[] interestTopicCategory;
 
         @Builder
