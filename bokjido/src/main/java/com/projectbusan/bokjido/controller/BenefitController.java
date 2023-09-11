@@ -31,8 +31,12 @@ public class BenefitController {
 
     @Operation(summary = "복지 서비스 전체 조회 - 지역, 나이, 키워드로 필터링")
     @GetMapping("/service")
-    public ResponseEntity<Page<BenefitMainResponseDTO>> getService(@Valid @RequestBody BenefitRequestDTO benefitRequestDTO, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
-        return ResponseEntity.ok(benefitsService.getService(benefitRequestDTO, pageable));
+    public ResponseEntity<Page<BenefitMainResponseDTO>> getService(
+            @RequestParam(required = false) String locality,
+            @RequestParam(required = false) Integer age,
+            @RequestParam(required = false) String keyword,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        return ResponseEntity.ok(benefitsService.getService(locality, age, keyword, pageable));
     }
 
     @Operation(summary = "복지 서비스 단일 조회")

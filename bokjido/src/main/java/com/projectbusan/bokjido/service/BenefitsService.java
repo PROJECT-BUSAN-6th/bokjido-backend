@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface BenefitsService {
     Long createService(User user, BenefitCreateRequestDTO benefitCreateRequestDTO);
-    Page<BenefitMainResponseDTO> getService(BenefitRequestDTO requestDto, Pageable pageable);
+    Page<BenefitMainResponseDTO> getService(String locality, Integer age, String keyword, Pageable pageable);
     BenefitDetailsResponseDTO getServiceById(Long serviceId);
     Page<BenefitMainResponseDTO> getServiceByRandom(Pageable pageable);
     Page<BenefitMainResponseDTO> getServiceByUser(User user, Pageable pageable);

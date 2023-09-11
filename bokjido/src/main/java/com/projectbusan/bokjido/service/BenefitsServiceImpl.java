@@ -60,12 +60,8 @@ public class BenefitsServiceImpl implements BenefitsService {
     }
 
     @Override
-    public Page<BenefitMainResponseDTO> getService(BenefitRequestDTO requestDto, Pageable pageable) {
-        List<Benefit> benefits = benefitsRepository.findDistinctByConditions(
-                requestDto.getLocality(),
-                requestDto.getAge(),
-                requestDto.getKeyword()
-        );
+    public Page<BenefitMainResponseDTO> getService(String locality, Integer age, String keyword, Pageable pageable) {
+        List<Benefit> benefits = benefitsRepository.findDistinctByConditions(locality, age, keyword);
 
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
