@@ -50,11 +50,20 @@ public class FacilityController {
         } return new ResponseEntity(facilityList, HttpStatus.OK);
     }
 
-    // <<-- 복지 시설 단일 조회 By 주소 -->>
+    // <<-- 복지 시설 전체 조회 By 주소 -->>
     @Operation(summary = "해당 주소를 포함하는 시설 전체 조회")
-    @GetMapping("/search/{location}")
+    @GetMapping("/search/location/{location}")
     public @ResponseBody ResponseEntity searchByLocation(@PathVariable(value = "location") String location) {
         List<Facility> facilityList = welfareFacility.searchByLocation(location);
+
+        return ResponseEntity.ok(facilityList);
+    }
+
+    // <<-- 복지 시설 전체 조회 By 카테고리 -->>
+    @Operation(summary = "해당 카테고리 포함하는 시설 전체 조회")
+    @GetMapping("/search/category/{category}")
+    public @ResponseBody ResponseEntity searchByCategory(@PathVariable(value = "category") String category) {
+        List<Facility> facilityList = welfareFacility.searchByCategory(category);
 
         return ResponseEntity.ok(facilityList);
     }

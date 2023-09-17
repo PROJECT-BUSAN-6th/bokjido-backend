@@ -48,6 +48,10 @@ public class WelfareFacility {
         return facilityRepository.findFacilitiesByLocationContaining(searchTerm);
     }
 
+    public List<Facility> searchByCategory(String searchTerm) {
+        return facilityRepository.findFacilitiesByCategoryContaining(searchTerm);
+    }
+
     // <<-- 전체 복지 건물 조회 -->>
     public List<Facility> loadAll() { return facilityRepository.findAll(); }
 
