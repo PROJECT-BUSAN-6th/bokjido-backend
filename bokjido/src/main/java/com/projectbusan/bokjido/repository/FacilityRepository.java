@@ -12,4 +12,6 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
     List<Facility> findFacilitiesByLocationContaining(String searchTerm);
 
     List<Facility> findFacilitiesByCategoryContaining(String searchTerm);
+
+    List<Facility> findFacilitiesByNameContaining(String searchTerm);
 }

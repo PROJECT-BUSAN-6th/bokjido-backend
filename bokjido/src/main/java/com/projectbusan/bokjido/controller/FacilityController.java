@@ -68,6 +68,15 @@ public class FacilityController {
         return ResponseEntity.ok(facilityList);
     }
 
+    // <<-- 복지 시설 전체 조회 By 이름 -->>
+    @Operation(summary = "해당 이름 포함하는 시설 전체 조회")
+    @GetMapping("/search/name/{name}")
+    public @ResponseBody ResponseEntity searchByName(@PathVariable(value = "name") String name) {
+        List<Facility> facilityList = welfareFacility.searchByName(name);
+
+        return ResponseEntity.ok(facilityList);
+    }
+
     // <<-- DB에 있는 전체 복지 시설 조회 -->>
     @Operation(summary = "DB의 전체 복지 시설 조회")
     @GetMapping("/loadall")
