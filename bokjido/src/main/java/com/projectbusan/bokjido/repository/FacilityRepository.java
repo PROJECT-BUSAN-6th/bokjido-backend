@@ -10,4 +10,8 @@ import java.util.List;
 public interface FacilityRepository extends JpaRepository<Facility, Long> {
 //    @Query("SELECT f FROM facility f WHERE f.location LIKE %:searchTerm%")
     List<Facility> findFacilitiesByLocationContaining(String searchTerm);
+
+    List<Facility> findFacilitiesByCategoryContaining(String searchTerm);
+
+    List<Facility> findFacilitiesByNameContaining(String searchTerm);
 }
