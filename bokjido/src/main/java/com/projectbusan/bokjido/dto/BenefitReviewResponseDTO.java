@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class BenefitReviewResponseDTO {
     private Long id;
     private String userId;
+    private Long facilityId;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -24,6 +25,7 @@ public class BenefitReviewResponseDTO {
         return BenefitReviewResponseDTO.builder()
                 .id(benefitReview.getId())
                 .userId(benefitReview.getUser().getUserid())
+                .facilityId(benefitReview.getFacility().getId())
                 .content(benefitReview.getContent())
                 .createdAt(benefitReview.getCreatedAt())
                 .modifiedAt(benefitReview.getModifiedAt())
