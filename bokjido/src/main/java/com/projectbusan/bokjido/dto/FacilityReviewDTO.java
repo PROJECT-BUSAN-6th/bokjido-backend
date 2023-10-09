@@ -51,7 +51,7 @@ public class FacilityReviewDTO {
     @Builder
     public static class FacilityReviewResponseDTO {
         private Long id;
-        private Long userId;
+        private String userId;
         private String content;
         private int clean;
         private int kindness;
@@ -63,7 +63,7 @@ public class FacilityReviewDTO {
         public static FacilityReviewResponseDTO toDto(FacilityReview facilityReview) {
             return FacilityReviewResponseDTO.builder()
                     .id(facilityReview.getId())
-                    .userId(facilityReview.getUser().getId())
+                    .userId(facilityReview.getUser().getUserid())
             .content(facilityReview.getContent())
             .clean(facilityReview.getClean())
             .kindness(facilityReview.getKindness())
