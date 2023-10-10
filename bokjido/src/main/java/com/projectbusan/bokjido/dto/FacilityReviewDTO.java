@@ -52,6 +52,7 @@ public class FacilityReviewDTO {
     public static class FacilityReviewResponseDTO {
         private Long id;
         private String userId;
+        private Long benefitId;
         private String content;
         private int clean;
         private int kindness;
@@ -64,6 +65,7 @@ public class FacilityReviewDTO {
             return FacilityReviewResponseDTO.builder()
                     .id(facilityReview.getId())
                     .userId(facilityReview.getUser().getUserid())
+                    .benefitId(facilityReview.getBenefit().getId())
             .content(facilityReview.getContent())
             .clean(facilityReview.getClean())
             .kindness(facilityReview.getKindness())
